@@ -9,7 +9,6 @@ public class Node {
 	
 	Node(int value)
 	{
-		
 		this.value = value;
 		right = null;
 		left = null;
