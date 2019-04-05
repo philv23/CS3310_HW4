@@ -2,16 +2,20 @@ package CS3310.wmich.edu.PVarnerKHamelink;
 
 public class Node {
 	char character;
-	//VALUE == FREQUENCY USED
+	// VALUE == FREQUENCY USED
 	int value;
-	Node left; 
+	Node left;
 	Node right;
-	
-	Node(int value)
-	{
+
+	Node(int value) {
 		this.value = value;
 		right = null;
 		left = null;
 	}
 	
+	Node() {
+		right = null;
+		left = null;
+	}
+
 }
