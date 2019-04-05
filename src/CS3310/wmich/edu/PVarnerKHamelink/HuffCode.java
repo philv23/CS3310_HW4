@@ -2,6 +2,8 @@ package CS3310.wmich.edu.PVarnerKHamelink;
 
 public class HuffCode {
 	
+	String k;
+	
     public static void printCode(Node root, String s) 
     {  
         if (root.left == null && root.right == null) { 

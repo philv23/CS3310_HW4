@@ -42,34 +42,102 @@ public class CharacterCounter {
 		 */
 	}
 
-	void generateHuffTree() {
+	void generateHuffTree(String text) {
+
+		characterCount(text);
 
 		Node root = null;
 
 		PriorityQueue<Node> q2 = queue;
 
-		while (q2.size() > 1) {
-
-			Node x = q2.peek();
-			q2.poll();
-
-			Node y = q2.peek();
-			q2.poll();
+		while (q2.size() != 1) {
+			Node left = q2.poll();
+			Node right = q2.poll();
 
 			Node f = new Node();
 
-			f.value = x.value + y.value;
-			f.character = '-';
+			f.value = left.value + right.value;
+			f.character = '\0';
 
-			f.left = x;
-			f.right = y;
-
-			root = f;
-
+			f.left = left;
+			f.right = right;
 			q2.add(f);
 		}
-		hTree = root;
-		HuffCode.printCode(root, "");
+
+		root = q2.peek();
+
+		Map<Character, String> huffmanCode = new HashMap<>();
+		encode(root, "", huffmanCode);
+
+		System.out.println("Original String: " + text);
+
+		StringBuilder sb = new StringBuilder();
+		for (int j = 0; j < text.length(); j++) {
+			sb.append(huffmanCode.get(text.charAt(j)));
+		}
+
+		System.out.println("\nEncoded String is :\n" + sb);
+
+		int in = -1;
+		System.out.println("Decoded String is: ");
+
+		while (in < sb.length() - 2) {
+			in = decode(root, in, sb);
+		}
+		
+		System.out.println("");
+
+		/*
+		 * Node root = null;
+		 * 
+		 * PriorityQueue<Node> q2 = queue;
+		 * 
+		 * while (q2.size() > 1) {
+		 * 
+		 * Node x = q2.peek(); q2.poll();
+		 * 
+		 * Node y = q2.peek(); q2.poll();
+		 * 
+		 * Node f = new Node();
+		 * 
+		 * f.value = x.value + y.value; f.character = '-';
+		 * 
+		 * f.left = x; f.right = y;
+		 * 
+		 * root = f; q2.add(f); } hTree = root; HuffCode.printCode(root, "");
+		 */
+	}
+
+	public static void encode(Node root, String str, Map<Character, String> huffmanCode) {
+		if (root == null) {
+			return;
+		}
+
+		huffmanCode.put(root.character, str);
+
+		encode(root.left, str + "0", huffmanCode);
+		encode(root.right, str + "1", huffmanCode);
+	}
+
+	public static int decode(Node root, int index, StringBuilder sb) {
+		if (root == null) {
+			return index;
+		}
+
+		if (root.left == null && root.right == null) {
+			System.out.print(root.character);
+			return index;
+		}
+
+		index++;
+
+		if (sb.charAt(index) == '0') {
+			index = decode(root.left, index, sb);
+		} else {
+			index = decode(root.right, index, sb);
+		}
+		return index;
+
 	}
 
 }

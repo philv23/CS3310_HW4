@@ -26,9 +26,9 @@ public class Main {
 		
 		CharacterCounter cCount = new CharacterCounter();
 		
-		cCount.characterCount(ls);
+		//cCount.characterCount(ls);
 		
-		cCount.generateHuffTree();
+		cCount.generateHuffTree(ls);
 		
 		System.out.println("> Enter the integer key: ");
 		
@@ -40,7 +40,8 @@ public class Main {
 
 	public static void generateFile(int n, String name) throws IOException {
 		//String alpha = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!\\#$%&()*+,-./:;<=>?@[]^_`{|}~";
-		String alpha = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()[] {};':,.<>?";
+		//String alpha = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()[] {};':,.<>?";
+		String alpha = "ABCDE";
 		String s = "";
 
 		for (int i = 0; i < n; i++) {
@@ -54,7 +55,6 @@ public class Main {
 
 		printWriter.print(s);
 		printWriter.close();
-
 	}
 
 }
