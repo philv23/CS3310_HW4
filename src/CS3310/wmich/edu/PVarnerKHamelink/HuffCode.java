@@ -7,7 +7,7 @@ public class HuffCode {
     public static void printCode(Node root, String s) 
     {  
         if (root.left == null && root.right == null) { 
-            System.out.println(root.character + ":" + s);  
+            System.out.println(root.character + "\t" + s);  
             return; 
         } 
         printCode(root.left, s + "0"); 

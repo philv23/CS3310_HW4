@@ -44,34 +44,45 @@ public class HuffmanTree {
 
 	}
 
-	void generateHuffTree(String text, String fileName) throws IOException {
+	void generateHuffTree(String text, String fileName, int key) throws IOException {
 
+		key = key % 2;
+		
+		String binName = fileName.replace(".txt", "_compressed.bin");
+		
+		System.out.print("Compressing “" + fileName + "” into “" + binName + "”... " );
+		
 		characterCount(text);
 
 		Node root = null;
 
 		PriorityQueue<Node> q2 = queue;
 
-		while (q2.size() != 1) {
-			Node left = q2.poll();
-			Node right = q2.poll();
+		while (q2.size() > 1) {
+			
+			
+			Node left = q2.peek();
+			q2.poll();
+			Node right = q2.peek();
+			q2.poll();
 
 			Node f = new Node();
 
 			f.value = left.value + right.value;
-			f.character = '\0';
+			f.character = '-';
 
 			f.left = left;
 			f.right = right;
+			root = f;
+			
 			q2.add(f);
 		}
 
-		root = q2.peek();
+		hTree = root;
 
 		Map<Character, String> huffmanCode = new HashMap<>();
-		encode(root, "", huffmanCode);
-
-		System.out.println("Original String:\n " + text);
+		encode(root, "", huffmanCode, key);
+		
 
 		StringBuilder sb = new StringBuilder();
 		for (int j = 0; j < text.length(); j++) {
@@ -89,15 +100,21 @@ public class HuffmanTree {
 			}
 		}
 
-		FileWriter fileWriter = new FileWriter(fileName);
+		FileWriter fileWriter = new FileWriter(binName);
 		PrintWriter printWriter = new PrintWriter(fileWriter);
 
 		for (int z = 0; z < byteCode.length; z++) {
 			printWriter.print(byteCode[z]);
 		}
 		printWriter.close();
+		
+		System.out.print("[Done]\n");
+		
+		String unName = binName.replace("_compressed.bin", "_decompressed.txt");
+		
+		System.out.print("Decompressing “" + binName + "” into “" + unName + "”... " );
 
-		File file3 = new File(fileName);
+		File file3 = new File(binName);
 
 		Scanner scan1 = new Scanner(file3);
 		String read = "";
@@ -105,38 +122,44 @@ public class HuffmanTree {
 		while (scan1.hasNext()) {
 			read = read + scan1.next();
 		}
-		System.out.println(read);
 
 		scan1.close();
-		System.out.println("\nEncoded String is :\n" + sb);
 
 		int in = -1;
-		System.out.println("Decoded String is: ");
 
 		while (in < read.length() - 2) {
-			in = decode(root, in, read);
+			in = decode(root, in, read, key);
 		}
 
-		fileName = fileName.replace("_compressed.bin", "_decompressed.txt");
+		
 
-		FileWriter fileWriter2 = new FileWriter(fileName);
+		FileWriter fileWriter2 = new FileWriter(unName);
 		PrintWriter printWriter2 = new PrintWriter(fileWriter2);
 
 		printWriter2.print(decoded);
 		printWriter2.close();
-		System.out.println(decoded);
+		System.out.print("[Done]\n");
+		
+		
 	}
 
-	public static void encode(Node root, String str, Map<Character, String> huffmanCode) {
+	public static void encode(Node root, String str, Map<Character, String> huffmanCode, int key) {
 		if (root == null) {
 			return;
 		}
+		if(key == 0) {
 		huffmanCode.put(root.character, str);
-		encode(root.left, str + "0", huffmanCode);
-		encode(root.right, str + "1", huffmanCode);
+		encode(root.left, str + "0", huffmanCode, key);
+		encode(root.right, str + "1", huffmanCode, key);
+		}
+		else {
+			huffmanCode.put(root.character, str);
+			encode(root.left, str + "1", huffmanCode, key);
+			encode(root.right, str + "0", huffmanCode, key);
+		}
 	}
 
-	public static int decode(Node root, int index, String sb) {
+	public static int decode(Node root, int index, String sb, int key) {
 		if (root == null) {
 			return index;
 		}
@@ -148,14 +171,40 @@ public class HuffmanTree {
 		}
 
 		index++;
+		
+		if(key == 0) {
 
 		if (sb.charAt(index) == '0') {
-			index = decode(root.left, index, sb);
+			index = decode(root.left, index, sb, key);
 		} else {
-			index = decode(root.right, index, sb);
+			index = decode(root.right, index, sb, key);
 		}
+		}
+		else {
+			if (sb.charAt(index) == '1') {
+				index = decode(root.left, index, sb, key);
+			} else {
+				index = decode(root.right, index, sb, key);
+			}
+			
+		}
+		
 		return index;
 
+	}
+	
+	public void printChars() {
+		int count = 0;
+		for (Map.Entry<Character, Integer> e: charCountHashMap.entrySet()) {	        
+	            System.out.println(e.getKey() + "        " + e.getValue());
+	            count = count + e.getValue();
+	    }
+		System.out.println("Total Characters: " + count);
+	}
+	
+	public void printEncodings() {
+		HuffCode.printCode(hTree, "");
+		
 	}
 
 }

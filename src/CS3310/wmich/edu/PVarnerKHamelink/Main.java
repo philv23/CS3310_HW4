@@ -29,12 +29,17 @@ public class Main {
 		
 		
 		HuffmanTree cCount = new HuffmanTree();	
-		String binName = fileName.replace(".txt", "_compressed.bin");
 		
-		cCount.generateHuffTree(ls, binName);
+		cCount.generateHuffTree(ls, fileName, key);
 		
 		scan1.close();
 		scan2.close();
+		
+		System.out.println("\nResults...\nCharacter Frequencies\n-----------");
+		cCount.printChars();
+		
+		System.out.println("\nCharacter Encodings\n-----------");
+		cCount.printEncodings();
 
 	}
 
