@@ -13,9 +13,12 @@ public class Main {
 		System.out.println("===========\nHuffman Code –\n===========");
 		System.out.println("> Enter the number of characters: ");
 		int num = scan1.nextInt();
-		
+		System.out.println("> Enter the integer key:  ");
+		int key = scan1.nextInt();
+		System.out.print("> Writing to file... ");
 		String fileName = "myfile.txt";
 		generateFile(num, fileName );
+		System.out.print("[Done]\n");
 		File file1 = new File(fileName);
 		
 		Scanner scan2 = new Scanner(file1);
@@ -24,14 +27,11 @@ public class Main {
 		ls = ls + scan2.next();
 		}
 		
-		CharacterCounter cCount = new CharacterCounter();
 		
-		//cCount.characterCount(ls);
+		HuffmanTree cCount = new HuffmanTree();	
+		String binName = fileName.replace(".txt", "_compressed.bin");
 		
-		cCount.generateHuffTree(ls);
-		
-		System.out.println("> Enter the integer key: ");
-		
+		cCount.generateHuffTree(ls, binName);
 		
 		scan1.close();
 		scan2.close();
@@ -39,9 +39,7 @@ public class Main {
 	}
 
 	public static void generateFile(int n, String name) throws IOException {
-		//String alpha = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!\\#$%&()*+,-./:;<=>?@[]^_`{|}~";
-		//String alpha = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()[] {};':,.<>?";
-		String alpha = "ABCDE";
+		String alpha = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!\\#$%&()*+,-./:;<=>?@[]^_`{|}~";
 		String s = "";
 
 		for (int i = 0; i < n; i++) {

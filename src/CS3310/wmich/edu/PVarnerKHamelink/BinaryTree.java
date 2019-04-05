@@ -22,7 +22,6 @@ public class BinaryTree {
 		}
 
 		return current;
-
 	}
 
 	public boolean containsNode(int value) {
