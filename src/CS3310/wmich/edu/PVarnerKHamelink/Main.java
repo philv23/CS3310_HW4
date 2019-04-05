@@ -19,7 +19,10 @@ public class Main {
 		File file1 = new File(fileName);
 		
 		Scanner scan2 = new Scanner(file1);
-		String ls = scan2.nextLine();
+		String ls = "";
+		while(scan2.hasNext()) {
+		ls = ls + scan2.next();
+		}
 		
 		CharacterCounter cCount = new CharacterCounter();
 		
