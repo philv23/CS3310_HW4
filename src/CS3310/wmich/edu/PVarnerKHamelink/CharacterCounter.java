@@ -8,6 +8,8 @@ public class CharacterCounter {
 
 	HashMap<Character, Integer> charCountHashMap = new HashMap<Character, Integer>();
 
+	Node hTree;
+
 	PriorityQueue<Node> queue;
 
 	void characterCount(String inputString) {
@@ -30,14 +32,44 @@ public class CharacterCounter {
 			hn.value = e.getValue();
 
 			q.add(hn);
-			System.out.println("The number of Char " + e.getKey() + "  is " + e.getValue());
+			// System.out.println("The number of Char " + e.getKey() + " is " +
+			// e.getValue());
 		}
 		queue = q;
-		
-		while(q.peek() != null) {
-			System.out.println(q.poll().character);
-		}
+
+		/*
+		 * while (q.peek() != null) { System.out.println(q.poll().character); }
+		 */
 	}
-	
-	
+
+	void generateHuffTree() {
+
+		Node root = null;
+
+		PriorityQueue<Node> q2 = queue;
+
+		while (q2.size() > 1) {
+
+			Node x = q2.peek();
+			q2.poll();
+
+			Node y = q2.peek();
+			q2.poll();
+
+			Node f = new Node();
+
+			f.value = x.value + y.value;
+			f.character = '-';
+
+			f.left = x;
+			f.right = y;
+
+			root = f;
+
+			q2.add(f);
+		}
+		hTree = root;
+		HuffCode.printCode(root, "");
+	}
+
 }
